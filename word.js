@@ -4,20 +4,11 @@ var Letter = require("./letter.js");
 //an array
 function parseWord(placeholder){
     allLetters = [];
-    console.log("inside parseWord");
+    // console.log("inside parseWord");
 
     for (i = 0; i < placeholder.length; i++){
         allLetters.push(new Letter(placeholder[i]));
     }
-    
-    console.log("inside parseWord");
-
-    console.log("For each statement: --------------");
-
-    //Just logging all of the letter objects
-    allLetters.forEach(function(thisLetter){
-        console.log(thisLetter);
-    })
 
     return allLetters;
 }
