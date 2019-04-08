@@ -4,28 +4,29 @@ var inquirer = require("inquirer");
 
 function Game(){
     var that = this;
+    
+    this.line = function(){
+        console.log("|-------------------------------------|")
+    }
 
     this.start = function(){
         console.log("Game has started");
-        this.guessesLeft = 10;
+        this.guessesLeft = 18;
         this.newWord();
     }
 
     this.newWord = function(){
         secretWord = words[Math.floor(Math.random() * words.length)];
         this.secretWord = secretWord;
-        // console.log(secretWord);
         this.thisWord = new Word(secretWord);
         this.render();
     }
 
     this.render = function(){
-        // console.log("rendering output");
-        // console.log(this);
-        // console.log(this.thisWord.letters);
         var output = "";
+
         this.thisWord.letters.forEach(function(thisLetter){
-            // console.log(thisLetter.thisLetter);
+
             if(!thisLetter.guessed){
                 output += "-";
             }
@@ -33,11 +34,14 @@ function Game(){
                 output += thisLetter.thisLetter;
             }
         })
-        // console.log("Output: " + output);
+
         this.inquire(output);
     }
 
     this.inquire = function(dashes){
+        this.line();
+        console.log("Guess a letter!");
+        console.log("Guesses left: " + that.guessesLeft);
         inquirer.prompt([
             {
                 type: "input",
@@ -52,6 +56,7 @@ function Game(){
 
     this.validate = function(guess){
         var guessedLetters = 0;
+        
         //Checks each letter to see if guess matches any of them,
         //if yes, will change "guessed" property to false
         this.thisWord.letters.forEach(function(thisLetter){
@@ -66,18 +71,22 @@ function Game(){
                 guessedLetters++;
             }
         })
-
+        
+        //If user has guessed all of the letters
         if(guessedLetters >= this.secretWord.length){
-            console.log("----------------------");
+            this.line();
             console.log(that.secretWord.toUpperCase());
-            console.log("----------------------");
             console.log("You have guessed all of the letters!");
+            this.line();
         }
+
+        //If the user runs out of guesses
         else if(that.guessesLeft === 0){
             console.log("You are out of guesses :^(");
         }
+        
+        //Allows the user to guess again
         else{
-            console.log("Guesses left: " + that.guessesLeft);
             that.render();
         }
     }
